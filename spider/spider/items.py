@@ -11,13 +11,10 @@ import pymysql
 
 
 class SpiderItem(scrapy.Item):
-    links = scrapy.Field()
+    link = scrapy.Field()
     question = scrapy.Field()
     answers = scrapy.Field()
     views = scrapy.Field()
     votes = scrapy.Field()
     tags = scrapy.Field()
-
-    def get_insert_sql(self):
-        insert_sql =
 

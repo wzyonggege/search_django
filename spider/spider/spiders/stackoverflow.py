@@ -21,11 +21,11 @@ class StackoverflowSpider(scrapy.Spider):
     def parse(self, response):
         for sel in response.xpath('//div[@class="question-summary"]'):
             item = SpiderItem()
-            item['links'] = sel.xpath('div[@class="summary"]/h3/a/@href').extract()[0].split('/')[2]
+            item['link'] = sel.xpath('div[@class="summary"]/h3/a/@href').extract()[0].split('/')[2]
             item['question'] = sel.xpath('div[@class="summary"]/h3/a/text()').extract()[0]
             item['votes'] = sel.xpath('div[1]//div[@class="vote"]//span/strong/text()').extract()[0]
             item['answers'] = sel.xpath('div[1]/div[@class="stats"]/div[2]/strong/text()').extract()[0]
-            item['views'] = sel.xpath('div[1]/div[@class="views supernova"]/@title').extract()[0]
+            item['views'] = sel.xpath('div[1]/div[@class="views supernova"]/@title').extract()[0].replace(',', '')
             item['views'] = item['views'].replace('views', '').strip()
             item['tags'] = ' '.join(sel.xpath('div[@class="summary"]/div[2]/a/text()').extract())
             yield item
