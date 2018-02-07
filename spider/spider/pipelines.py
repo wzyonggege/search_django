@@ -40,10 +40,12 @@ class SpiderPipeline(object):
     def _conditional_insert(self, conn, item, spider):
         db_key = 'question,link,answers,votes,views,tags'
         db_value = "\"{}\", {}, {}, {}, {}, \"{}\"".format(*[item[k] for k in db_key.split(',')])
-        sql = "insert INTO {} (_id, {}) VALUES (\"{}\", {}) ON DUPLICATE KEY UPDATE".format(
+        sql = "insert INTO {} (_id, {}) VALUES (\"{}\", {}) " \
+              "ON DUPLICATE KEY UPDATE question=VALUES(question), answers=VALUES(answers), views=VALUES(views)," \
+              "votes=VALUES(votes), link=VALUES(link), tags=VALUES(tags) ".format(
             self.TABLE, db_key, uuid.uuid3(uuid.NAMESPACE_DNS, item['link']), db_value
         )
-        print(sql)
+        # print(sql)
         conn.execute(sql)
 
     def _handle_error(self, failure, item, spider):
