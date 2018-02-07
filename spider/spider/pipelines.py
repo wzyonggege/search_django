@@ -18,7 +18,7 @@ class SpiderPipeline(object):
         self.MYSQL_HOST = '127.0.0.1'
         self.MYSQL_DBNAME = 'spider'
         self.MYSQL_USER = 'root'
-        self.MYSQL_PASSWD = ''
+        self.MYSQL_PASSWD = 'Zaqxswcde123'
         self.MYSQL_PORT = 3306
         self.TABLE = 'stackoverflow'
         self.dbpool = adbapi.ConnectionPool('pymysql',
