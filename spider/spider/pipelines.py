@@ -12,12 +12,13 @@ from scrapy import log
 
 import uuid
 
+
 class SpiderPipeline(object):
     def __init__(self):
         self.MYSQL_HOST = '127.0.0.1'
         self.MYSQL_DBNAME = 'spider'
         self.MYSQL_USER = 'root'
-        self.MYSQL_PASSWD = 'Zaqxswcde123'
+        self.MYSQL_PASSWD = ''
         self.MYSQL_PORT = 3306
         self.TABLE = 'stackoverflow'
         self.dbpool = adbapi.ConnectionPool('pymysql',
@@ -40,9 +41,13 @@ class SpiderPipeline(object):
     def _conditional_insert(self, conn, item, spider):
         db_key = 'question,link,answers,votes,views,tags'
         db_value = "\"{}\", {}, {}, {}, {}, \"{}\"".format(*[item[k] for k in db_key.split(',')])
+<<<<<<< HEAD
         sql = "insert INTO {} (_id, {}) VALUES (\"{}\", {}) " \
               "ON DUPLICATE KEY UPDATE question=VALUES(question), answers=VALUES(answers), views=VALUES(views)," \
               "votes=VALUES(votes), link=VALUES(link), tags=VALUES(tags) ".format(
+=======
+        sql = "insert INTO {} (_id, {}) VALUES (\"{}\", {})".format(
+>>>>>>> b67b9eb7cdb9bf1eb3860a625b05a681375e8a8f
             self.TABLE, db_key, uuid.uuid3(uuid.NAMESPACE_DNS, item['link']), db_value
         )
         # print(sql)
