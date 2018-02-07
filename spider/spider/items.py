@@ -6,15 +6,49 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-
+from Dsearch.search.models import Stackoverflow
 import pymysql
+from elasticsearch_dsl.connections import connections
+import redis
 
+es = connections.create_connection(Stackoverflow._doc_type.using)
 
-class SpiderItem(scrapy.Item):
+# 根据字符串生成搜索建议数组
+def gen_suggests(index, info_tuple):
+    used_words = set()
+    suggests = []
+    for text, weight in info_tuple:
+        if text:
+            # 调用es的analyze接口分析字符串
+            words = es.indices.analyze(index=index, analyzer="ik_max_word", params={'filter': ["lowercase"]}, body=text)
+            anylyzed_words = set([r["token"] for r in words["tokens"] if len(r["token"]) > 1])
+            new_words = anylyzed_words - used_words
+        else:
+            new_words = set()
+        if new_words:
+            suggests.append({"input": list(new_words), "weight": weight})
+
+    return suggests
+
+class StackoverflowItem(scrapy.Item):
     link = scrapy.Field()
     question = scrapy.Field()
     answers = scrapy.Field()
     views = scrapy.Field()
     votes = scrapy.Field()
     tags = scrapy.Field()
+
+    def save_to_es(self):
+        so = Stackoverflow()
+        so.question = self["question"]
+        so.answers_nums = self["answers"]
+        so.votes_nums = self["votes"]
+        so.views_nums = self["views"]
+        so.link = self["link"]
+        so.tags = self["tags"]
+        so.suggests = gen_suggests(Stackoverflow._doc_type.index, ((so.question, 10), (so.tags, 7)))
+
+        so.save()
+        return
+
 

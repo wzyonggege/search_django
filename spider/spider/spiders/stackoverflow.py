@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy import Request
-from ..items import SpiderItem
+from ..items import StackoverflowItem
 
 import re
 import time
@@ -16,7 +16,7 @@ class StackoverflowSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for i in range(101, 1000001):
+        for i in range(1, 11):
             yield scrapy.Request(url=self.base_url.format(i), headers=self.headers)
             if not i % 100:
                 time.sleep(30)
@@ -24,7 +24,7 @@ class StackoverflowSpider(scrapy.Spider):
 
     def parse(self, response):
         for sel in response.xpath('//div[@class="question-summary"]'):
-            item = SpiderItem()
+            item = StackoverflowItem()
             item['link'] = sel.xpath('div[@class="summary"]/h3/a/@href').extract()[0].split('/')[2]
             item['question'] = sel.xpath('div[@class="summary"]/h3/a/text()').extract()[0]
             item['votes'] = sel.xpath('div[1]//div[@class="vote"]//span/strong/text()').extract()[0]

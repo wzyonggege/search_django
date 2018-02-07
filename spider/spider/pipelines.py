@@ -13,7 +13,7 @@ from scrapy import log
 import uuid
 
 
-class SpiderPipeline(object):
+class MySQLPipeline(object):
     def __init__(self):
         self.MYSQL_HOST = '127.0.0.1'
         self.MYSQL_DBNAME = 'spider'
@@ -52,3 +52,9 @@ class SpiderPipeline(object):
 
     def _handle_error(self, failure, item, spider):
         print(failure)
+
+
+class ElasticsearchPipeline(object):
+    def process_item(self, item, spider):
+        item.save_to_es()
+        return item
