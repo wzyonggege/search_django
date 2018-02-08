@@ -6,15 +6,13 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from Dsearch.search.models import Stackoverflow
-import pymysql
+from Dsearch.search.models import StackoverflowType
 from elasticsearch_dsl.connections import connections
-import redis
 
-es = connections.create_connection(Stackoverflow._doc_type.using)
+es = connections.create_connection(StackoverflowType._doc_type.using)
 
 # 根据字符串生成搜索建议数组
-def gen_suggests(index, info_tuple):
+def gen_suggests(es, index, info_tuple):
     used_words = set()
     suggests = []
     for text, weight in info_tuple:
@@ -39,16 +37,16 @@ class StackoverflowItem(scrapy.Item):
     tags = scrapy.Field()
 
     def save_to_es(self):
-        so = Stackoverflow()
+        so = StackoverflowType()
         so.question = self["question"]
-        so.answers_nums = self["answers"]
-        so.votes_nums = self["votes"]
-        so.views_nums = self["views"]
+        so.answers = self["answers"]
+        so.votes = self["votes"]
+        so.views = self["views"]
         so.link = self["link"]
         so.tags = self["tags"]
-        so.suggests = gen_suggests(Stackoverflow._doc_type.index, ((so.question, 10), (so.tags, 7)))
-
+        so.suggests = gen_suggests(es, StackoverflowType._doc_type.index, ((so.question, 10), (so.tags, 7)))
         so.save()
+
         return
 
 

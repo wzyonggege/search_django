@@ -1,10 +1,12 @@
-import json, datetime, redis
+import json
+import redis
+from datetime import datetime
 
 from django.shortcuts import render, HttpResponse
-from django.views.generic import View
+from django.views.generic.base import View
 from elasticsearch import Elasticsearch
 
-from .models import Stackoverflow
+from .models import StackoverflowType
 redis_cli = redis.StrictRedis()
 client = Elasticsearch(hosts=["127.0.0.1"])
 
@@ -17,7 +19,7 @@ class SearchSuggest(View):
         key_words = request.GET.get("s", "")
         re_datas = []
         if key_words:
-            s = Stackoverflow.search()
+            s = StackoverflowType.search()
             s = s.suggest('my_suggest', key_words, completion={
                 "field": "suggest",
                 "fuzzy": {
@@ -28,14 +30,14 @@ class SearchSuggest(View):
             suggestions = s.execute_suggest()
             for match in suggestions.my_suggest[0].options:
                 source = match._source
-                re_datas.append(source["title"])
+                re_datas.append(source["question"])
         return HttpResponse(json.dumps(re_datas), content_type="application/json")
 
 
 class SearchView(View):
     def get(self, request):
         key_words = request.GET.get("q", "")
-        s_type = request.GET.get("s_type", "article")
+        s_type = request.GET.get("s_type", "question")
 
         redis_cli.zincrby("search_keywords_set", key_words)
 
@@ -63,8 +65,8 @@ class SearchView(View):
                     "pre_tags": ['<span class="keyWord">'],
                     "post_tags": ['</span>'],
                     "fields": {
-                        "title": {},
-                        "content": {},
+                        "question": {},
+                        "tags": {},
                     }
                 }
             }
@@ -80,17 +82,18 @@ class SearchView(View):
         hit_list = []
         for hit in response["hits"]["hits"]:
             hit_dict = {}
-            if "title" in hit["highlight"]:
-                hit_dict["title"] = "".join(hit["highlight"]["title"])
+            if "question" in hit["highlight"]:
+                hit_dict["question"] = "".join(hit["highlight"]["question"])
             else:
-                hit_dict["title"] = hit["_source"]["title"]
-            if "content" in hit["highlight"]:
-                hit_dict["content"] = "".join(hit["highlight"]["content"])[:500]
+                hit_dict["question"] = hit["_source"]["question"]
+            if "tags" in hit["highlight"]:
+                hit_dict["content"] = "".join(hit["highlight"]["tags"])[:500]
             else:
-                hit_dict["content"] = hit["_source"]["content"][:500]
+                hit_dict["content"] = hit["highlight"]["tags"]
 
-            hit_dict["create_date"] = hit["_source"]["create_date"]
-            hit_dict["url"] = hit["_source"]["url"]
+
+            hit_dict["answers"] = hit["_source"]["answers"]
+            hit_dict["link"] = hit["_source"]["link"]
             hit_dict["score"] = hit["_score"]
 
             hit_list.append(hit_dict)

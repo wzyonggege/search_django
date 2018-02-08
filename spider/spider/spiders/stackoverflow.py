@@ -16,7 +16,7 @@ class StackoverflowSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for i in range(1, 11):
+        for i in range(1, 2):
             yield scrapy.Request(url=self.base_url.format(i), headers=self.headers)
             if not i % 100:
                 time.sleep(30)

@@ -17,9 +17,7 @@
             </h1>
             <div class="nav ue-clear">
             	<ul class="searchList">
-                    <li class="searchItem current" data-type="article">文章</li>
-                    <li class="searchItem" data-type="question">问答</li>
-                    <li class="searchItem" data-type="job">职位</li>
+                    <li class="searchItem current" data-type="question">文章</li>
                 </ul>
             </div>
             <div class="inputArea">
@@ -57,7 +55,7 @@
 <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/global.js' %}"></script>
 <script type="text/javascript">
-    var suggest_url = "{% url "search:suggest" %}"
+    var suggest_url = "{% url 'search:suggest' %}"
     var search_url = "{% url 'search:search' %}"
 
 
