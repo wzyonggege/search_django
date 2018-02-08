@@ -48,7 +48,7 @@
                     {% for hit in all_hits %}
                     <div class="resultItem">
                             <div class="itemHead">
-                                <a href="{{ hit.url }}"  target="_blank" class="title">{% autoescape off %}{{ hit.title }}{% endautoescape %}</a>
+                                <a href="{{ hit.url }}"  target="_blank" class="title">{% autoescape off %}{{ hit.question }}{% endautoescape %}</a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                                     <span class="label">来源：</span>
@@ -60,12 +60,12 @@
                                 </span>
                             </div>
                             <div class="itemBody">
-                                {% autoescape off %}{{ hit.content }}{% endautoescape %}
+                                {% autoescape off %}{{ hit.question }}{% endautoescape %}
                             </div>
                             <div class="itemFoot">
                                 <span class="info">
                                     <label>网站：</label>
-                                    <span class="value">伯乐在线</span>
+                                    <span class="value">Stackoverflow</span>
                                 </span>
                                 <span class="info">
                                     <label>发布时间：</label>
@@ -102,7 +102,7 @@
     </div><!--End of bd-->
 </div>
 
-<div id="foot">Copyright &copy;projectsedu.com 版权所有  E-mail:admin@projectsedu.com</div>
+<div id="foot">Copyright &copy;</div>
 </body>
 <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/global.js' %}"></script>

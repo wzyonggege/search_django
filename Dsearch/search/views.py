@@ -93,7 +93,7 @@ class SearchView(View):
 
 
             hit_dict["answers"] = hit["_source"]["answers"]
-            hit_dict["link"] = hit["_source"]["link"]
+            hit_dict["url"] = 'https://stackoverflow.com/questions/' + hit["_source"]["link"]
             hit_dict["score"] = hit["_score"]
 
             hit_list.append(hit_dict)
