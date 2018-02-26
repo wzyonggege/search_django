@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 
 from rest_framework_elasticsearch import es_views, es_pagination, es_filters
@@ -6,7 +8,6 @@ from .search_indexes import StackoverflowType
 class StackoverflowView(es_views.ListElasticAPIView):
     es_client = Elasticsearch(hosts=["localhost:9200/"],
                               connection_class=RequestsHttpConnection)
-
     # pagination
     es_pagination_class = es_pagination.ElasticLimitOffsetPagination
 
@@ -22,3 +23,6 @@ class StackoverflowView(es_views.ListElasticAPIView):
         'question',
         'tags'
     )
+
+def index(request):
+    return render(request, 'index.html')

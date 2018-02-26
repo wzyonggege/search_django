@@ -16,11 +16,8 @@ class StackoverflowSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for i in range(1, 2):
+        for i in range(1, 51):
             yield scrapy.Request(url=self.base_url.format(i), headers=self.headers)
-            if not i % 100:
-                time.sleep(30)
-        # return [scrapy.Request(url=self.base_url.format(i), headers=self.headers) for i in range(342, 100001)]
 
     def parse(self, response):
         for sel in response.xpath('//div[@class="question-summary"]'):

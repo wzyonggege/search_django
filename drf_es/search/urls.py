@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
-from .views import StackoverflowView
+from . import views
 
 urlpatterns = [
-    url(r'^api/list$', StackoverflowView.as_view(), name='questions_list')
+    url(r'^api/list$', views.StackoverflowView.as_view(), name='questions_list'),
+    url(r'^$', views.index, name='index')
 ]

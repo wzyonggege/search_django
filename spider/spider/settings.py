@@ -66,7 +66,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'spider.pipelines.ElasticsearchPipeline': 300,
-   'spider.pipelines.MySQLPipeline': 100,
+   # 'spider.pipelines.MySQLPipeline': 100,
 }
 
 
