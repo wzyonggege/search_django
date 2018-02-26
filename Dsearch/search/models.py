@@ -4,7 +4,7 @@ from elasticsearch_dsl import DocType, Text, Integer, Completion
 from elasticsearch_dsl.analysis import CustomAnalyzer as _CustomAnalyzer
 
 from elasticsearch_dsl.connections import connections
-
+connections.create_connection(hosts=["http://127.0.0.1:9200/"])
 
 # analyzer
 class CustomAnalyzer(_CustomAnalyzer):
@@ -12,7 +12,7 @@ class CustomAnalyzer(_CustomAnalyzer):
         return {}
 
 ik_analyzer = CustomAnalyzer("ik_max_word", filter=["lowercase"])
-connections.create_connection(hosts=["http://127.0.0.1:9200/"])
+
 
 class StackoverflowType(DocType):
     suggests = Completion(analyzer=ik_analyzer)
