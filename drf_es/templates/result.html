@@ -14,7 +14,7 @@
 	<div id="hd" class="ue-clear">
     	<a href="/"><div class="logo"></div></a>
         <div class="inputArea">
-        	<input type="text" class="searchInput" value="{{ key_words }}"/>
+        	<input type="text" class="searchInput" value=""/>
             <input type="button" class="searchButton" onclick="add_search()"/>
         </div>
     </div>
@@ -87,7 +87,7 @@
                 	<h6>热门搜索</h6>
                     <ul class="historyList">
                         {% for search_word in topn_search %}
-                            <li><a href="/search?q={{ search_word }}">{{ search_word }}</a></li>
+                            <li><a href="/search?search={{ search_word }}">{{ search_word }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -108,7 +108,19 @@
 <script type="text/javascript" src="{% static 'js/global.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/pagination.js' %}"></script>
 <script type="text/javascript">
-    var search_url = "{% url 'search:search' %}"
+
+    $.get({
+        url:{% url 'search:search_list' %},
+        data:{
+            search:"java"
+        },
+        success:function(res){
+            console.log(res)
+        }
+    });
+
+
+    var search_url = "{% url 'search:result' %}"
 
 	$('.searchList').on('click', '.searchItem', function(){
 		$('.searchList .searchItem').removeClass('current');
@@ -155,17 +167,17 @@
         
     });
 	var key_words = "java"
-	//分页
-	$(".pagination").pagination({{ total_nums }}, {
-		current_page :{{ page|add:'-1' }}, //当前页码
-		items_per_page :10,
-		display_msg :true,
-		callback :pageselectCallback
-	});
-	function pageselectCallback(page_id, jq) {
-		window.location.href=search_url+'?q='+key_words+'&p='+page_id
-	}
-	
+	<!--//分页-->
+	<!--$(".pagination").pagination({{ total_nums }}, {-->
+		<!--current_page :{{ page|add:'-1' }}, //当前页码-->
+		<!--items_per_page :10,-->
+		<!--display_msg :true,-->
+		<!--callback :pageselectCallback-->
+	<!--});-->
+	<!--function pageselectCallback(page_id, jq) {-->
+		<!--window.location.href=search_url+'?q='+key_words+'&p='+page_id-->
+	<!--}-->
+
 	setHeight();
 	$(window).resize(function(){
 		setHeight();	
@@ -221,7 +233,7 @@
             MapSearchArr();
         }
 
-        window.location.href=search_url+'?q='+val+"&s_type="+$(".searchItem.current").attr('data-type')
+        window.location.href=search_url+'?search='+val
 
     }
 
@@ -234,7 +246,7 @@
             arrLen = searchArr.length
         }
         for (var i=0;i<arrLen;i++){
-            tmpHtml += '<li><a href="/search?q='+searchArr[i]+'">'+searchArr[i]+'</a></li>'
+            tmpHtml += '<li><a href="/search?search='+searchArr[i]+'">'+searchArr[i]+'</a></li>'
         }
         $(".mySearch .historyList").append(tmpHtml);
     }

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 {% load staticfiles %}
@@ -17,7 +19,7 @@
             </h1>
             <div class="nav ue-clear">
             	<ul class="searchList">
-                    <li class="searchItem current" data-type="question">文章</li>
+                    <li class="searchItem current" data-type="question">Question</li>
                 </ul>
             </div>
             <div class="inputArea">
@@ -56,7 +58,7 @@
 <script type="text/javascript" src="{% static 'js/global.js' %}"></script>
 <script type="text/javascript">
     var suggest_url = "{% url 'search:suggest' %}"
-    var search_url = "{% url 'search:search' %}"
+    var search_url = "{% url 'search:result' %}"
 
 
 	$('.searchList').on('click', '.searchItem', function(){
@@ -128,7 +130,7 @@
             MapSearchArr();
         }
 
-        window.location.href=search_url+'?q='+val+"&s_type="+$(".searchItem.current").attr('data-type')
+        window.location.href=search_url+'?search='+val
 
     }
 
@@ -141,7 +143,7 @@
             arrLen = searchArr.length
         }
         for (var i=0;i<arrLen;i++){
-            tmpHtml += '<a href="'+search_url+'?q='+searchArr[i]+'">'+searchArr[i]+'</a>'
+            tmpHtml += '<a href="'+search_url+'?search='+searchArr[i]+'">'+searchArr[i]+'</a>'
         }
         $(".mysearch .all-search").html(tmpHtml);
     }

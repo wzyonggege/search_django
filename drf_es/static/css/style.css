@@ -38,7 +38,7 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 a{color:#0080cc;}
 a:hover{color:#267A01;text-decoration:underline;}
 /*logo样式*/
-.logo{width:160px;height:47px;padding:0 5px;background: url(../img/logo1.png) no-repeat center center #fff;}
+.logo{width:160px;height:47px;padding:0 5px;background: url(../img/logo-bak2.png) no-repeat center center #fff;}
 
 /*choose样式*/
 .choose{float:left;margin-right:15px;white-space:nowrap;}
