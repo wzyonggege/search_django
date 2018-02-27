@@ -6,10 +6,11 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from Dsearch.search.models import StackoverflowType
+from drf_es.search.search_indexes import StackoverflowType
 from elasticsearch_dsl.connections import connections
 
 es = connections.create_connection(StackoverflowType._doc_type.using)
+
 
 # 根据字符串生成搜索建议数组
 def gen_suggests(es, index, info_tuple):
@@ -27,6 +28,7 @@ def gen_suggests(es, index, info_tuple):
             suggests.append({"input": list(new_words), "weight": weight})
 
     return suggests
+
 
 class StackoverflowItem(scrapy.Item):
     link = scrapy.Field()
@@ -46,7 +48,6 @@ class StackoverflowItem(scrapy.Item):
         so.tags = self["tags"]
         so.suggests = gen_suggests(es, StackoverflowType._doc_type.index, ((so.question, 10), (so.tags, 7)))
         so.save()
-
         return
 
 

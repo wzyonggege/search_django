@@ -35,7 +35,7 @@ class MySQLPipeline(object):
         d = self.dbpool.runInteraction(self._conditional_insert, item, spider)
         log.msg('connect to mysql worked')
         d.addErrback(self._handle_error, item, spider) # 调用异常处理方法
-        d.addBoth(lambda  _:item)
+        d.addBoth(lambda _: item)
         return d
 
     def _conditional_insert(self, conn, item, spider):

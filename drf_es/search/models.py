@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Stackoverflow(models.Model):
     questions = models.CharField(max_length=255)
     tags = models.TextField()

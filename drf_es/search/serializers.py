@@ -3,6 +3,7 @@ from .search_indexes import StackoverflowType
 
 from rest_framework_elasticsearch.es_serializer import ElasticModelSerializer
 
+
 class ElasticSOFSerializer(ElasticModelSerializer):
     class Meta:
         model = Stackoverflow
