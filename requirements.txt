@@ -9,7 +9,7 @@ cryptography==2.3
 cssselect==1.0.3
 Django==1.11.29
 django-rest-elasticsearch==0.3.4
-djangorestframework==3.7.7
+djangorestframework==3.9.1
 elasticsearch==5.5.2
 elasticsearch-dsl==5.4.0
 hyperlink==17.3.1
