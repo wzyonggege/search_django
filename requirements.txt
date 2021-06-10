@@ -7,7 +7,7 @@ chardet==3.0.4
 constantly==15.1.0
 cryptography==2.3
 cssselect==1.0.3
-Django==1.11.29
+Django==2.2.24
 django-rest-elasticsearch==0.3.4
 djangorestframework==3.9.1
 elasticsearch==5.5.2
